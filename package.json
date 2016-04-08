@@ -1,0 +1,27 @@
+{
+  "name": "salesforce-package-merge",
+  "version": "0.0.1",
+  "description": "Merge any number of Salesforce metadata packages together into a single package.",
+  "main": "index.js",
+  "scripts": {
+    "test": "karam start"
+  },
+  "keywords": [
+    "salesforce",
+    "package"
+  ],
+  "author": "John Benson",
+  "license": "ISC",
+  "dependencies": {
+    "xml2js": "^0.4.16"
+  },
+  "devDependencies": {
+    "karma": "^0.13.22",
+    "karma-chai": "^0.1.0",
+    "karma-coverage": "^0.5.5",
+    "karma-mocha": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "phantomjs-polyfill": "0.0.2",
+    "phantomjs-prebuilt": "^2.1.7"
+  }
+}
