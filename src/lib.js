@@ -1,38 +1,36 @@
 const Promise = require('promise');
-const parseString = require('xml2js').parseString;
+const thenifyAll = require('thenify-all');
+const xml2js = thenifyAll(require('xml2js'), {}, ['parseString']);
 const union = require('lodash/union');
 const groupBy = require('lodash/groupBy');
 const values = require('lodash/values');
 const uniq = require('lodash/uniq');
 const filter = require('lodash/filter');
 const includes = require('lodash/includes');
-const fse = require('fs-extra');
 const fs = require('fs-promise');
-const path = require('path');
+const path = require('path'); 
+
+const builder = new xml2js.Builder();
+
+const PACKAGE_XML = 'package.xml';
 
 module.exports = {
+  writePackage: (packageJson, filePath) => (
+    fs.writeFile(path.join(filePath, PACKAGE_XML), builder.buildObject(packageJson))
+  ),
+
   fetchPackages: paths => {
     return Promise.all(paths.map(filePath => {
-      return new Promise((resolve, reject) => {
-        fs.readFile(path.join(filePath, 'package.xml'))
-          .then((err, res) => {
-            console.log(res);
-            if(err) {
-              reject(err);
-            }
-
-            parseString(res, (jsonRes) => {
-              resolve(jsonRes);
-            });
-          })
-      });
+      return fs.readFile(path.join(filePath, PACKAGE_XML))
+        .then(file => (xml2js.parseString(file)))
     }));
   },
 
   copyResources: (paths, dest) => {
-    return Promise.all(paths.map(path => {
-      return fs.copy(path, dest, { filter: /\package.xml?$/ });
-    }));
+    return paths.map(path => {
+      fs.copySync(path, dest, (fileName) => (!fileName.endsWith(PACKAGE_XML)))
+      return true;
+    });
   },
 
   reducePackages: packages => {
@@ -43,7 +41,7 @@ module.exports = {
 
       Object.keys(groups).forEach(groupName => {
         groups[groupName] = groups[groupName].reduce((result, next) => {
-          const members = [...result.members, ...next.members];
+          const members = result.members.concat(next.members);
 
           const dupes = filter(members, function (value, index, iteratee) {
              return includes(iteratee, value, index + 1);
