@@ -1,6 +1,6 @@
 {
   "name": "salesforce-package-merge",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Merge any number of Salesforce metadata packages together into a single package.",
   "main": "src/index.js",
   "scripts": {
@@ -22,7 +22,8 @@
     "ncp": "^2.0.0",
     "promise": "^7.1.1",
     "thenify-all": "^1.6.0",
-    "xml2js": "^0.4.16"
+    "xml2js": "^0.4.16",
+    "lodash": "^4.8.2"
   },
   "devDependencies": {
     "babel": "^6.5.2",
@@ -42,7 +43,6 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.26",
     "karma-webpack": "^1.7.0",
-    "lodash": "^4.8.2",
     "mocha": "^2.4.5",
     "phantomjs-polyfill": "0.0.2",
     "phantomjs-prebuilt": "^2.1.7",
